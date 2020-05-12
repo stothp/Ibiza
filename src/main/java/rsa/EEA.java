@@ -3,7 +3,7 @@ package rsa;
 import java.math.BigInteger;
 
 public class EEA {
-    private BigInteger lnko = BigInteger.ZERO;
+    private BigInteger gcd = BigInteger.ZERO;
     private BigInteger x = BigInteger.ZERO;
     private BigInteger y = BigInteger.ZERO;
 
@@ -39,7 +39,7 @@ public class EEA {
             q[1] = r[0].divide(r[1]);
             r[2] = r[0].mod(r[1]);
             if (r[2].equals(BigInteger.ZERO)) {
-                this.lnko = r[1];
+                this.gcd = r[1];
                 if (k % 2 != 0) {
                     this.x = x[1].multiply(BigInteger.valueOf(-1));
                 } else {
@@ -61,8 +61,8 @@ public class EEA {
         }
     }
 
-    public BigInteger getLnko(){
-        return lnko;
+    public BigInteger getGcd(){
+        return gcd;
     }
 
     public BigInteger getX(){

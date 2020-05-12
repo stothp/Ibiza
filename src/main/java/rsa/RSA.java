@@ -12,7 +12,7 @@ public class RSA {
 
         BigInteger e = BigInteger.valueOf(3);
         EEA eea;
-        while (!(eea = new EEA(fin, e)).getLnko().equals(BigInteger.ONE)) {
+        while (!(eea = new EEA(fin, e)).getGcd().equals(BigInteger.ONE)) {
             e = e.add(BigInteger.TWO);
         };
 
@@ -27,9 +27,6 @@ public class RSA {
     }
 
     public static BigInteger encode (BigInteger message, RSAPublicKey publicKey) {
-//        if (message.bitLength()>=publicKey.getN().bitLength()){
-//            throw new IllegalArgumentException("The message is longer than the bitlength of the provided key.");
-//        }
         return FME.fme(message, publicKey.getE(), publicKey.getN());
     }
 

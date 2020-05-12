@@ -43,7 +43,6 @@ public class MR {
         this.s = sdr.getS();
         this.d = sdr.getD();
         this.r = sdr.getR();
-        //System.out.println (n + ": " + s + " " + d + " " + r);
     }
 
     public Boolean checkAgainstA(BigInteger a){
@@ -51,15 +50,12 @@ public class MR {
             throw new IllegalArgumentException("The base has to be smaller than n!");
         }
 
-//        System.out.println ("+ " + a + " " + d + " " + n);
-//        System.out.println ("* " + RSA.FME.fme(a, d, n));
         if (FME.fme(a, d, n).equals(BigInteger.ONE)){
             return false;
         }
 
         BigInteger current = FME.fme(a, d, n);
         for (BigInteger r = BigInteger.ZERO; r.compareTo(s) == -1; r = r.add(BigInteger.ONE)){
-//            System.out.println (current.mod(n));
             BigInteger mod = current.mod(n);
             if (mod.equals(n.subtract(BigInteger.ONE))){
                 return false;
@@ -69,5 +65,4 @@ public class MR {
 
         return true;
     }
-
 }
