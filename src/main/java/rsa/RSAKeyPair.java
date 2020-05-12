@@ -1,6 +1,4 @@
-package RSA;
-
-import java.math.BigInteger;
+package rsa;
 
 public class RSAKeyPair{
     private RSAPublicKey publicKey;

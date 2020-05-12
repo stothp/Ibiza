@@ -1,7 +1,6 @@
-package RSA;
+package rsa;
 
 import java.math.BigInteger;
-import java.security.PublicKey;
 
 public class RSA {
     public static RSAKeyPair generateKeys(int bits){
@@ -27,7 +26,10 @@ public class RSA {
         return new RSAKeyPair(publicKey, privateKey);
     }
 
-    public static BigInteger encode (BigInteger message, RSAPublicKey publicKey){
+    public static BigInteger encode (BigInteger message, RSAPublicKey publicKey) {
+//        if (message.bitLength()>=publicKey.getN().bitLength()){
+//            throw new IllegalArgumentException("The message is longer than the bitlength of the provided key.");
+//        }
         return FME.fme(message, publicKey.getE(), publicKey.getN());
     }
 
