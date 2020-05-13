@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 import rsa.RSA;
 import rsa.RSAKeyPair;
+import rsa.RSAPrivateKey;
 import rsa.RSAPublicKey;
 
 import java.math.BigInteger;
@@ -75,7 +76,7 @@ public class MainController {
         bitSelector.getSelectionModel().select(defaultEntry);
     }
 
-    public void disableAll(){
+    public void disableAll() {
         bitSelector.setDisable(true);
         publicE.setDisable(true);
         publicN.setDisable(true);
@@ -90,7 +91,7 @@ public class MainController {
         exit.setDisable(true);
     }
 
-    public void enableAll(){
+    public void enableAll() {
         bitSelector.setDisable(false);
         publicE.setDisable(false);
         publicN.setDisable(false);
@@ -103,7 +104,7 @@ public class MainController {
         encode.setDisable(false);
         decode.setDisable(false);
         exit.setDisable(false);
-    }    
+    }
 
     public void exit() {
         Stage stage = (Stage) mainVBox.getScene().getWindow();
@@ -111,14 +112,16 @@ public class MainController {
     }
 
     public void generate() {
-        disableAll();
-        publicE.setText("calculating...");
-        publicN.setText("calculating...");
-        privateD.setText("calculating...");
-        privateN.setText("calculating...");
-        new Thread( () -> {
+        Platform.runLater(() -> {
+            disableAll();
+            publicE.setText("calculating...");
+            publicN.setText("calculating...");
+            privateD.setText("calculating...");
+            privateN.setText("calculating...");
+        });
+        new Thread(() -> {
+            RSAKeyPair keyPair = RSA.generateKeys(((BitEntry) bitSelector.getSelectionModel().getSelectedItem()).getKey());
             Platform.runLater(() -> {
-                RSAKeyPair keyPair = RSA.generateKeys(((BitEntry) bitSelector.getSelectionModel().getSelectedItem()).getKey());
                 publicE.setText(keyPair.getPublicKey().getE().toString());
                 publicN.setText(keyPair.getPublicKey().getN().toString());
                 privateD.setText(keyPair.getPrivateKey().getD().toString());
@@ -129,71 +132,85 @@ public class MainController {
     }
 
     public void encode() {
-        disableAll();
-        encodedNumber.setText("calculating...");
-        new Thread( () -> {
-            Platform.runLater(() -> {
+        Platform.runLater(() -> {
+            disableAll();
+            encodedNumber.setText("calculating...");
+        });
+        new Thread(() -> {
                 try {
                     if (new BigInteger(numberToEncode.getText()).compareTo(new BigInteger(publicN.getText())) != -1) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setContentText("Input number is bigger than n!");
-                        alert.showAndWait();
-                        enableAll();
-                        encodedNumber.setText("");
+                        Platform.runLater(() -> {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setContentText("Input number is bigger than n!");
+                            alert.showAndWait();
+                            enableAll();
+                            encodedNumber.setText("");
+                        });
                         return;
                     }
-                    encodedNumber.setText(
-                            RSA.encode(
-                                    new BigInteger(numberToEncode.getText()),
-                                    new RSAPublicKey(
-                                            new BigInteger(publicE.getText()),
-                                            new BigInteger(publicN.getText()))
-                            ).toString());
+                    BigInteger encoded = RSA.encode(
+                            new BigInteger(numberToEncode.getText()),
+                            new RSAPublicKey(
+                                    new BigInteger(publicE.getText()),
+                                    new BigInteger(publicN.getText()))
+                    );
+                    Platform.runLater(() -> {
+                        encodedNumber.setText(encoded.toString());
+                    });
                 } catch (Exception e) {
-                    encodedNumber.setText("");
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setContentText("Error during encryption.\nCheck the 'e', 'n' and 'number to encrypt' fields!");
-                    alert.showAndWait();
+                    Platform.runLater(() -> {
+                        encodedNumber.setText("");
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setContentText("Error during encryption.\nCheck the 'e', 'n' and 'number to encrypt' fields!");
+                        alert.showAndWait();
+                    });
                 }
-                enableAll();
-            });
+                Platform.runLater(() -> {
+                    enableAll();
+                });
         }).start();
     }
 
     public void decode() {
-        disableAll();
-        decodedNumber.setText("calculating...");
-        decodedText.setText("calculating...");
+        Platform.runLater(() -> {
+            disableAll();
+            decodedNumber.setText("calculating...");
+            decodedText.setText("calculating...");
+        });
         new Thread(() -> {
-            Platform.runLater(() -> {
-                try {
-                    decodedNumber.setText(
-                            RSA.encode(
-                                    new BigInteger(numberToDecode.getText()),
-                                    new RSAPublicKey(
-                                            new BigInteger(privateD.getText()),
-                                            new BigInteger(privateN.getText()))
-                            ).toString());
+            try {
+                BigInteger decoded = RSA.decode(
+                        new BigInteger(numberToDecode.getText()),
+                        new RSAPrivateKey(
+                                new BigInteger(privateD.getText()),
+                                new BigInteger(privateN.getText()))
+                );
+                Platform.runLater(() -> {
+                    decodedNumber.setText(decoded.toString());
                     decodedText.setText(new String(new BigInteger(decodedNumber.getText()).toByteArray()));
-                } catch (Exception e) {
+                });
+            } catch (Exception e) {
+                Platform.runLater(() -> {
                     decodedNumber.setText("");
                     decodedText.setText("");
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setContentText("Error during decryption.\nCheck the 'd', 'n' and 'number to decrypt' fields!");
                     alert.showAndWait();
-                }
+                });
+            }
+            Platform.runLater(() -> {
                 enableAll();
             });
         }).start();
     }
 
-    public void textToEncodeType(){
+    public void textToEncodeType() {
         try {
             numberToEncode.setText(new BigInteger(textToEncode.getText().getBytes()).toString());
-        } catch (Exception e){
+        } catch (Exception e) {
             numberToEncode.setText("");
         }
     }
