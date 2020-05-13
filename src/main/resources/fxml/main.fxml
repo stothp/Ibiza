@@ -57,15 +57,15 @@
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin></TextField>
-            <TextField fx:id="numberToEncode" layoutX="85.0" layoutY="13.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <TextField fx:id="numberToEncode" layoutX="85.0" layoutY="13.0" promptText="&gt; put here the number to encrypt &lt;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin></TextField>
-            <TextField fx:id="textToEncode" onKeyTyped="#textToEncodeType" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TextField fx:id="textToEncode" onKeyTyped="#textToEncodeType" promptText="&gt; start type here the text to encrypt &lt;" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin></TextField>
-            <TextField fx:id="encodedNumber" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <TextField fx:id="encodedNumber" editable="false" style="-fx-background-color: lightgrey;" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin></TextField>
@@ -118,15 +118,15 @@
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin></TextField>
-            <TextField fx:id="decodedNumber" layoutX="85.0" layoutY="13.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <TextField fx:id="decodedNumber" editable="false" layoutX="85.0" layoutY="13.0" style="-fx-background-color: lightgrey;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin></TextField>
-            <TextField fx:id="decodedText" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TextField fx:id="decodedText" editable="false" style="-fx-background-color: lightgrey;" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin></TextField>
-            <TextField fx:id="numberToDecode" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <TextField fx:id="numberToDecode" promptText="&gt; put here the number to decrypt &lt;" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin></TextField>

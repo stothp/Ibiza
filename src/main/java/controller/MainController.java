@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -82,10 +83,7 @@ public class MainController {
         privateN.setDisable(true);
         numberToEncode.setDisable(true);
         textToEncode.setDisable(true);
-        encodedNumber.setDisable(true);
         numberToDecode.setDisable(true);
-        decodedNumber.setDisable(true);
-        decodedText.setDisable(true);
         generate.setDisable(true);
         encode.setDisable(true);
         decode.setDisable(true);
@@ -100,10 +98,7 @@ public class MainController {
         privateN.setDisable(false);
         numberToEncode.setDisable(false);
         textToEncode.setDisable(false);
-        encodedNumber.setDisable(false);
         numberToDecode.setDisable(false);
-        decodedNumber.setDisable(false);
-        decodedText.setDisable(false);
         generate.setDisable(false);
         encode.setDisable(false);
         decode.setDisable(false);
@@ -116,7 +111,7 @@ public class MainController {
     }
 
     public void generate() {
-        new Thread( () -> {
+        Platform.runLater(() -> {
             publicE.setText("calculating...");
             publicN.setText("calculating...");
             privateD.setText("calculating...");
@@ -128,19 +123,20 @@ public class MainController {
             privateD.setText(keyPair.getPrivateKey().getD().toString());
             privateN.setText(keyPair.getPrivateKey().getN().toString());
             enableAll();
-            }).start();
+            });
     }
 
     public void encode() {
-        new Thread( () -> {
+        Platform.runLater(() -> {
             disableAll();
             encodedNumber.setText("calculating...");
             try {
-                if (new BigInteger(numberToEncode.getText()).bitLength() > new BigInteger(publicN.getText()).bitLength()) {
+                if (new BigInteger(numberToEncode.getText()).compareTo (new BigInteger(publicN.getText())) != -1) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
-                    alert.setContentText("Input number bit length is bigger than the bitlength of n");
+                    alert.setContentText("Input number is bigger than n!");
                     alert.showAndWait();
+                    enableAll();
                     return;
                 }
                 encodedNumber.setText(
@@ -156,14 +152,13 @@ public class MainController {
                 alert.setTitle("Error");
                 alert.setContentText("Error during encryption.\nCheck the 'e', 'n' and 'number to encrypt' fields!");
                 alert.showAndWait();
-                return;
             }
             enableAll();
-        }).start();
+        });
     }
 
     public void decode() {
-        new Thread( () -> {
+        Platform.runLater(() -> {
             disableAll();
             decodedNumber.setText("calculating...");
             decodedText.setText("calculating...");
@@ -183,10 +178,9 @@ public class MainController {
                 alert.setTitle("Error");
                 alert.setContentText("Error during decryption.\nCheck the 'd', 'n' and 'number to decrypt' fields!");
                 alert.showAndWait();
-                return;
             }
             enableAll();
-        }).start();
+        });
     }
 
     public void textToEncodeType(){
