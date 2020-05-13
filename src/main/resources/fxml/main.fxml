@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="mainVBox" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <children>
       <Label prefHeight="29.0" prefWidth="604.0" style="-fx-border-color: grey; -fx-background-color: lightgrey;" text="Key Generation">
          <padding>
@@ -21,8 +21,8 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-          <Button mnemonicParsing="false" text="Generate Key Pair" GridPane.halignment="CENTER" />
-          <ComboBox prefWidth="150.0" GridPane.columnIndex="2" />
+          <Button fx:id="generate" mnemonicParsing="false" onAction="#generate" text="Generate Key Pair" GridPane.halignment="CENTER" />
+          <ComboBox fx:id="bitSelector" prefWidth="150.0" GridPane.columnIndex="2" />
           <Label prefHeight="17.0" prefWidth="61.0" text="Bit length:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
          </children>
       </GridPane>
@@ -49,22 +49,37 @@
                   <Insets right="5.0" />
                </GridPane.margin>
             </Label>
-            <TextField GridPane.columnIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField layoutX="85.0" layoutY="13.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Label text="Number to encode:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <TextField fx:id="publicE" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin></TextField>
+            <TextField fx:id="publicN" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin></TextField>
+            <TextField fx:id="numberToEncode" layoutX="85.0" layoutY="13.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin></TextField>
+            <TextField fx:id="textToEncode" onKeyTyped="#textToEncodeType" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin></TextField>
+            <TextField fx:id="encodedNumber" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin></TextField>
+            <Label text="Number to encrypt:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
             </Label>
-            <Label text="Text to encode:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+            <Label text="Text to encrypt:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
             </Label>
-            <Button mnemonicParsing="false" text="Encode &gt;&gt;" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+            <Button fx:id="encode" mnemonicParsing="false" onAction="#encode" text="Encrypt &gt;&gt;" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
             <Label text="Value of e:" GridPane.halignment="RIGHT">
                <GridPane.margin>
                   <Insets right="5.0" />
@@ -95,22 +110,37 @@
                   <Insets right="5.0" />
                </GridPane.margin>
             </Label>
-            <TextField GridPane.columnIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField layoutX="85.0" layoutY="13.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Label text="Number to encode:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <TextField fx:id="privateD" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin></TextField>
+            <TextField fx:id="privateN" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin></TextField>
+            <TextField fx:id="decodedNumber" layoutX="85.0" layoutY="13.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin></TextField>
+            <TextField fx:id="decodedText" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin></TextField>
+            <TextField fx:id="numberToDecode" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin></TextField>
+            <Label text="Decrypted number:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
             </Label>
-            <Label text="Text to encode:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+            <Label text="Decrypted text:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
             </Label>
-            <Button mnemonicParsing="false" text="&lt;&lt; Decode" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+            <Button fx:id="decode" mnemonicParsing="false" onAction="#decode" text="&lt;&lt; Decrypt" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
             <Label text="Value of d:" GridPane.halignment="RIGHT">
                <GridPane.margin>
                   <Insets right="5.0" />
@@ -120,7 +150,7 @@
       </GridPane>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: lightgray;">
          <buttons>
-            <Button mnemonicParsing="false" text="Exit" />
+            <Button fx:id="exit" mnemonicParsing="false" onAction="#exit" text="Exit" />
          </buttons>
          <padding>
             <Insets right="5.0" />
